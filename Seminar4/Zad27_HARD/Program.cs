@@ -53,7 +53,7 @@ int getSumOfDigitInStringN(String n)
             number = number / 10;
         }
     }
-    catch (Exception e)
+    catch (Exception)
     {
         Console.WriteLine("Ошибка конвертация строки");
     }
