@@ -1,5 +1,4 @@
-﻿// Задайте двумерный массив из целых чисел. Количество строк и столбцов задается с клавиатуры. 
-//  Отсортировать элементы по возрастанию слева направо и сверху вниз.
+﻿// Задача 54: Задайте двумерный массив. Напишите программу, которая упорядочит по убыванию элементы каждой строки двумерного массива.
 
 Console.Write("Введите количество строк: ");
 int rows = Convert.ToInt32(Console.ReadLine());
@@ -9,13 +8,9 @@ int cols = Convert.ToInt32(Console.ReadLine());
 int[,] arrayTwoDimensional = FillTwoDimensionalArray(rows, cols);
 Console.WriteLine("Двумерный массив: ");
 PrintTwoDimensionalArray(arrayTwoDimensional);
-
-int[] arrayOneDimensional = FillOneDimensionalArray(arrayTwoDimensional);
-int[] sortArray = SortArray(arrayOneDimensional);
-
-int[,] arrayTwoDimensionalSort = FillTwoFromOneDimensionalArray(sortArray, rows, cols);
-Console.WriteLine("Отсортированный двумерный  массив: ");
-PrintTwoDimensionalArray(arrayTwoDimensionalSort);
+SortTwoDimensionalArray(arrayTwoDimensional); // сортировка построчно
+Console.WriteLine("Отсортированный построчно двумерный массив: ");
+PrintTwoDimensionalArray(arrayTwoDimensional);
 
 
 
@@ -49,40 +44,43 @@ void PrintTwoDimensionalArray(int[,] array)
 
 
 
-int[] FillOneDimensionalArray(int[,] array)
+int[,] SortTwoDimensionalArray(int[,] array)
 {
-    int[] arr = new int[array.GetLength(0) * array.GetLength(1)];
+    int[] tmpArray = new int[array.GetLength(1)];
     int k = 0;
     for (int i = 0; i < array.GetLength(0); i++)
     {
         for (int j = 0; j < array.GetLength(1); j++)
         {
-            arr[k] = array[i, j];
+            tmpArray[k] = array[i, j];
             k++;
         }
+        SortArray(tmpArray);
+        FillTwoFromOneDimensionalArrayByRows(tmpArray, array, i);
+        k = 0;
     }
-    return arr;
-}
+    return array;
 
+}
 
 
 
 
 int[] SortArray(int[] array)
 {
-    int size = array.Length;
-    while (size > 1)
+    int size = 0;
+    while (size != array.Length - 1)
     {
-        int i = 0;
-        while (i < size - 1)
+        int i = array.Length - 1;
+        while (i > size)
         {
-            if (array[i] > array[i + 1])
+            if (array[i - 1] < array[i])
             {
-                (array[i], array[i + 1]) = (array[i + 1], array[i]);
+                (array[i - 1], array[i]) = (array[i], array[i - 1]);
             }
-            i++;
+            i--;
         }
-        size--;
+        size++;
     }
     return array;
 }
@@ -90,19 +88,14 @@ int[] SortArray(int[] array)
 
 
 
-int[,] FillTwoFromOneDimensionalArray(int[] array, int r, int c)
+void FillTwoFromOneDimensionalArrayByRows(int[] arrayOD, int[,] arrayTD, int rows)
 {
-    int[,] arr = new int[r, c];
     int k = 0;
-    for (int i = 0; i < arr.GetLength(0); i++)
+    for (int j = 0; j < arrayTD.GetLength(1); j++)
     {
-        for (int j = 0; j < arr.GetLength(1); j++)
-        {
-            arr[i, j] = array[k];
-            k++;
-        }
+        arrayTD[rows, j] = arrayOD[k];
+        k++;
     }
-    return arr;
 }
 
 
