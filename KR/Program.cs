@@ -4,9 +4,8 @@ string[] firstArray = FillArray(size);
 PrintArray(firstArray);
 Console.WriteLine();
 
-int countValue = 0;
 string[] getTA = GetTempArray(firstArray);
-string[] getFUA = GetFinalUpdateArray(getTA);
+string[] getFUA = GetFinalUpdateArray(getTA, GetCountValue(firstArray));
 PrintArray(getFUA);
 
 
@@ -15,12 +14,13 @@ PrintArray(getFUA);
 string[] GetTempArray(string[] array)
 {
     string[] getTempArray = new string[array.Length];
+    int j = 0;
     for (int i = 0; i < array.Length; i++)
     {
         if (array[i].Length <= 3)
         {
-            getTempArray[countValue] = array[i];
-            countValue++;
+            getTempArray[j] = array[i];
+            j++;
         }
     }
     return getTempArray;
@@ -29,9 +29,25 @@ string[] GetTempArray(string[] array)
 
 
 
-string[] GetFinalUpdateArray(string[] array)
+int GetCountValue(string[] array)
 {
-    string[] getFinalUpdateArray = new string[countValue];
+    int countValue = 0;
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (array[i].Length <= 3)
+        {
+            countValue++;
+        }
+    }
+    return countValue;
+}
+
+
+
+
+string[] GetFinalUpdateArray(string[] array, int count)
+{
+    string[] getFinalUpdateArray = new string[count];
     int j = 0;
     for (int i = 0; i < array.Length; i++)
     {
